@@ -1,11 +1,16 @@
 package com.springIOC;
 
+import com.springIOC.anotation.Autowired;
 import com.springIOC.anotation.Controller;
 import com.springIOC.anotation.Service;
+import com.springIOC.demo.Test;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,12 +40,42 @@ public class SpringContext {
         doRegister(classNames);
 
         //doInject()
-        doInject();
+        doInject(ioc);
 
-        System.out.println(classNames);
+        Test test = (Test)ioc.get("test");
+        test.setName("zppp");
+        test.getName();
     }
 
-    private void doInject() {
+    private void doInject(Map<String, Object> ioc) {
+        for (Map.Entry <String, Object> entry: ioc.entrySet()) {
+
+            if(ioc.isEmpty()){continue;}
+
+            Field[] fields =entry.getValue().getClass().getDeclaredFields();
+            for (Field field : fields){
+                if(!field.isAnnotationPresent(Autowired.class)){
+                    continue;
+                }
+
+                Autowired autowired = field.getAnnotation(Autowired.class);
+                String beanName = autowired.value().trim();
+
+                if("".equals(beanName)){
+                    beanName = field.getType().getSimpleName();
+                    beanName = lowerFirstCase(beanName);
+                }
+
+                field.setAccessible(true);
+
+                try {
+                    field.set(entry.getValue(),ioc.get(beanName));
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
     }
 
     private void doRegister(List<String> classNames) {
