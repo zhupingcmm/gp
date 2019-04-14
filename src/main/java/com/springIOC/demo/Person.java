@@ -1,8 +1,8 @@
 package com.springIOC.demo;
 
-import com.springIOC.anotation.Controller;
+import com.springIOC.anotation.Service;
 
-@Controller
+@Service
 public class Person {
     private String name;
     private int age;

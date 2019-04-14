@@ -1,9 +1,9 @@
 package com.springIOC.demo;
 
 import com.springIOC.anotation.Autowired;
-import com.springIOC.anotation.Controller;
+import com.springIOC.anotation.Service;
 
-@Controller
+@Service
 public class Test {
 
     public Test() {

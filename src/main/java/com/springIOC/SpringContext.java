@@ -42,9 +42,35 @@ public class SpringContext {
         //doInject()
         doInject(ioc);
 
-        Test test = (Test)ioc.get("test");
+        //
+
+        initHandlerMappings(ioc);
+
+/*        Test test = (Test)ioc.get("test");
         test.setName("zppp");
-        test.getName();
+        test.getName();*/
+    }
+
+    private void initHandlerMappings(Map<String, Object> ioc) {
+        for (Map.Entry<String,Object>entry: ioc.entrySet()){
+            if (ioc.isEmpty()){continue;}
+            Class<?>clazz = entry.getValue().getClass();
+
+            if(!clazz.isAnnotationPresent(Controller.class)){
+                continue;
+            }
+
+            Controller controller = clazz.getAnnotation(Controller.class);
+            String baseUrl = controller.value().trim();
+            if ("".equals(baseUrl)){
+                baseUrl= "abc";
+            }
+
+
+
+
+        }
+
     }
 
     private void doInject(Map<String, Object> ioc) {
