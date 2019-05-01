@@ -1,9 +1,11 @@
 package com.MyBatisTest.service;
 
+import com.MyBatisTest.Log;
 import com.MyBatisTest.beans.UserBean;
 import com.MyBatisTest.mapper.UserMapper;
 import com.MyBatisTest.tools.DBTools;
 import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 
 import java.util.List;
 
@@ -14,9 +16,24 @@ public class UserService {
 //        insertUser();
 //        deleteUser();
 //        selectUserById();
-        selectAllUser();
+/*        selectAllUser();*/
+        UserBean userBean = new UserBean(1,"d","1999",  80000.222);
+        updateUser(userBean);
     }
 
+    private static void updateUser(UserBean userBean){
+        SqlSession session = DBTools.getSession();
+        UserMapper mapper = session.getMapper(UserMapper.class);
+
+        try {
+            Log.logger.info("start update");
+            mapper.updateUser(userBean);
+            session.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
     /**
      * 新增用户
@@ -59,7 +76,7 @@ public class UserService {
         SqlSession session=DBTools.getSession();
         UserMapper mapper=session.getMapper(UserMapper.class);
         try {
-            UserBean user=    mapper.selectUserById(2);
+            UserBean user= mapper.selectUserById(2);
             System.out.println(user.toString());
 
             session.commit();

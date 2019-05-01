@@ -15,11 +15,11 @@ public interface UserMapper {
     /**
      * 修改用戶
      * @param user
-     * @param id
+     *
      * @return
      * @throws Exception
      */
-    public int updateUser (UserBean user,int id) throws Exception;
+    public int updateUser (UserBean user) throws Exception;
     /**
      * 刪除用戶
      * @param id

@@ -3,17 +3,17 @@
 <mapper namespace="com.MyBatisTest.mapper.UserMapper">
     <!-- 自定义返回结果集 -->
     <resultMap id="userMap" type="UserBean">
-        <id property="id" column="id" javaType="java.lang.Integer"></id>
-        <result property="username" column="username" javaType="java.lang.String"></result>
-        <result property="password" column="password" javaType="java.lang.String"></result>
-        <result property="account" column="account" javaType="java.lang.Double"></result>
+        <id property="id" column="id" javaType="java.lang.Integer" typeHandler="com.MyBatisTest.typeHandler.GpTypeHandler"/>
+        <result property="username" column="username" javaType="java.lang.String"/>
+        <result property="password" column="password" javaType="java.lang.String"/>
+        <result property="account" column="account" javaType="java.lang.Double"/>
     </resultMap>
 
     <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
         insert into t_user (username,password,account) values (#{username},#{password},#{account})
     </insert>
 
-    <update id="updateUser" >
+    <update id="updateUser" parameterType="com.MyBatisTest.beans.UserBean">
       update t_user set username=#{username},password=#{password},account=#{account} where id=#{id}
     </update>
 
